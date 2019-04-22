@@ -22,13 +22,15 @@ fn main() {
             .expect("failed to read from stdin");
 
         let trimmed = input_text.trim();
-        let arg = match trimmed.parse::<i8>() {
+        arg = match trimmed.parse::<i8>() {
             Ok(n) => n,
             Err(_) => {
                 println!("enter valid input");
                 continue;
             }
         };
+
+
     }
 }
 
