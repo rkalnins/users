@@ -1,10 +1,32 @@
 use std::io::{stdin, stdout, Write};
+
 extern crate colored;
 
+use std::fs;
+use std::fs::{File, OpenOptions};
+use std::io;
+use std::io::prelude::*;
+use std::os::unix;
+use std::path::Path;
+
 use colored::*;
+use std::error::Error;
 
 fn main() {
-    println!("{}", "User management system".blue());
+    println!("{}", "User management system".blue().bold());
+
+    let path = Path::new("users.txt");
+    let display = path.display();
+
+    if !Path::new("users.txt").exists() {
+        let mut file = match File::create(&path) {
+            Err(why) => panic!("couldn't create {}: {}",
+                               display,
+                               why.description()),
+            Ok(file) => file,
+        };
+    }
+
     let mut arg: i8 = 0;
     let mut users: Vec<User> = Vec::new();
 
@@ -28,7 +50,7 @@ fn main() {
         arg = match trimmed.parse::<i8>() {
             Ok(n) => n,
             Err(_) => {
-                println!("enter valid input");
+                println!("{}", "enter valid input".red());
                 continue;
             }
         };
@@ -42,7 +64,7 @@ fn main() {
             }
             2 => {
                 println!();
-                println!("View users:");
+                println!("Users:");
                 println!();
 
                 for user in users.iter() {
