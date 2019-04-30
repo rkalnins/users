@@ -13,7 +13,7 @@ fn main() {
     let mut users: Vec<User> = Vec::new();
 
     while arg != 6 {
-        let mut input_text = String::new();
+        let _input_text = String::new();
 
         println!();
         println!("1. Add user");
@@ -101,7 +101,7 @@ fn main() {
 
 
 fn remove_user(name: &str, users: &mut Vec<User>) {
-    let index = users.iter().position(|u| &u.name == name).unwrap();
+    let index = users.iter().position(|u| u.name == name).unwrap();
     users.remove(index);
 }
 
@@ -112,15 +112,13 @@ fn new_user() -> User {
     let age = io::safe_i64_parse("age");
     let id = io::safe_i64_parse("id");
 
-    let user = User {
+    User {
         name,
         username,
         email,
         age,
         id,
-    };
-
-    user
+    }
 }
 
 struct User {
