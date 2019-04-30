@@ -1,11 +1,14 @@
 extern crate colored;
 #[macro_use]
 extern crate prettytable;
+extern crate serde;
 
 use std::io::{stdout, Write};
 
 use colored::*;
 use crate::io::get_arg;
+use std::fs;
+use crate::user::{Users, log_users, User};
 
 mod io;
 mod search;
@@ -15,7 +18,9 @@ fn main() {
     println!("{}", "User management system".blue().bold());
 
     let mut arg: i8 = 0;
-    let mut users: Vec<user::User> = Vec::new();
+    let data = fs::read_to_string("save.json").expect("Unable to read file");
+    let mut users: user::Users = serde_json::from_str(&data.trim()).unwrap();
+
 
     while arg != 6 {
         let _input_text = String::new();
@@ -41,7 +46,7 @@ fn main() {
             1 => {
                 println!();
                 println!("Add user");
-                users.push(user::new_user());
+                users.0.push(user::new_user());
                 println!();
             }
             2 => {
@@ -87,7 +92,11 @@ fn main() {
                     _ => panic!("invalid option, quitting"),
                 }
             }
-            6 => println!("{}", "quitting...".yellow()),
+            6 => {
+                let data = serde_json::to_string(&users).unwrap();
+                fs::write("save.json", data).expect("Unable to write file");
+                println!("{}", "quitting...".yellow())
+            }
             _ => panic!("invalid option, quitting"),
         }
     }

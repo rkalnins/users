@@ -12,14 +12,6 @@ pub fn get_arg() -> String {
     s_input_text.trim().to_string()
 }
 
-pub fn log_str_field(data: &str) {
-    print!("{:#}", data);
-}
-
-pub fn log_i64_field(data: i64) {
-    print!("{:#}", data);
-}
-
 pub fn get_trimmed_input(field: &str) -> String {
     print!("{}{} ", field, ">".green());
     stdout().flush().expect("failed to flush stdout");

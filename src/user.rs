@@ -2,6 +2,10 @@ use crate::io;
 
 use prettytable::{Table, Row, Cell};
 
+#[macro_use]
+use serde::{Serialize, Deserialize};
+
+#[derive(Serialize, Deserialize)]
 pub struct User {
     pub name: String,
     pub username: String,
@@ -10,9 +14,12 @@ pub struct User {
     pub id: i64,
 }
 
-pub fn remove_user(name: &str, users: &mut Vec<User>) {
-    let index = users.iter().position(|u| u.name == name).unwrap();
-    users.remove(index);
+#[derive(Serialize, Deserialize)]
+pub struct Users(pub Vec<User>);
+
+pub fn remove_user(name: &str, users: &mut Users) {
+    let index = users.0.iter().position(|u| u.name == name).unwrap();
+    users.0.remove(index);
 }
 
 pub fn new_user() -> User {
