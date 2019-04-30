@@ -36,7 +36,7 @@ pub fn new_user() -> User {
     }
 }
 
-pub fn log_users(users: &Vec<&User>) {
+pub fn log_users(users: &[&User]) {
     let mut table = Table::new();
     table.add_row(row!["id", "name", "username", "email", "age"]);
 
