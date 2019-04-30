@@ -29,12 +29,12 @@ pub fn get_trimmed_input(field: &str) -> String {
     result.parse().unwrap()
 }
 
-pub fn safe_i64_parse(field: &str) -> i64 {
+pub fn parse_i64(field: &str) -> i64 {
     match get_trimmed_input(field).parse::<i64>() {
         Ok(n) => n,
         Err(err) => {
             println!("enter valid {}, {}", field, err);
-            safe_i64_parse(field)
+            parse_i64(field)
         }
     }
 }

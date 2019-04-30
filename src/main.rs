@@ -1,16 +1,19 @@
 extern crate colored;
 
-use std::io::{stdin, stdout, Write};
+use std::io::{stdout, Write};
 
 use colored::*;
+use crate::io::get_arg;
 
 mod io;
+mod search;
+mod user;
 
 fn main() {
     println!("{}", "User management system".blue().bold());
 
     let mut arg: i8 = 0;
-    let mut users: Vec<User> = Vec::new();
+    let mut users: Vec<user::User> = Vec::new();
 
     while arg != 6 {
         let _input_text = String::new();
@@ -36,7 +39,7 @@ fn main() {
             1 => {
                 println!();
                 println!("Add user");
-                users.push(new_user());
+                users.push(user::new_user());
                 println!();
             }
             2 => {
@@ -44,23 +47,15 @@ fn main() {
                 println!("Users:");
                 println!();
 
-                for user in users.iter() {
-                    println!("{} {}", "User: ".red(), user.id);
-                    io::log_str_field("name", &user.name);
-                    io::log_str_field("username", &user.username);
-                    io::log_str_field("email", &user.email);
-                    io::log_i64_field("age", user.age);
-                    println!();
+                for _u in users.iter() {
+                    user::log_user(_u)
                 }
             }
             3 => println!("3"),
             4 => {
                 println!("Enter name:");
                 stdout().flush().expect("failed to flush stdout");
-                let mut input_text = String::new();
-                stdin().read_line(&mut input_text).unwrap();
-                let result = input_text.trim();
-                remove_user(&result, &mut users);
+                user::remove_user(&get_arg(), &mut users);
             }
             5 => {
                 println!("Search by");
@@ -82,13 +77,14 @@ fn main() {
                 };
 
                 print!("{}", "> ".green());
+                let input = get_arg();
 
                 match s_arg {
-                    1 => println!("1"),
-                    2 => println!("2"),
-                    3 => println!("3"),
-                    4 => println!("4"),
-                    5 => println!("5"),
+                    1 => search::by_name(&input, &users),
+                    2 => search::by_username(&input, &users),
+                    3 => search::by_email(&input, &users),
+                    4 => search::by_age(io::parse_i64(&input), &users),
+                    5 => search::by_id(io::parse_i64(&input), &users),
                     6 => continue,
                     _ => panic!("invalid option, quitting"),
                 }
@@ -97,33 +93,4 @@ fn main() {
             _ => panic!("invalid option, quitting"),
         }
     }
-}
-
-fn remove_user(name: &str, users: &mut Vec<User>) {
-    let index = users.iter().position(|u| u.name == name).unwrap();
-    users.remove(index);
-}
-
-fn new_user() -> User {
-    let name = io::get_trimmed_input("name");
-    let username = io::get_trimmed_input("username");
-    let email = io::get_trimmed_input("email");
-    let age = io::safe_i64_parse("age");
-    let id = io::safe_i64_parse("id");
-
-    User {
-        name,
-        username,
-        email,
-        age,
-        id,
-    }
-}
-
-struct User {
-    name: String,
-    username: String,
-    email: String,
-    age: i64,
-    id: i64,
 }
