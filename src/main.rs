@@ -25,7 +25,8 @@ const ADD: i8 = 1;
 const VIEW: i8 = 2;
 const REMOVE: i8 = 3;
 const SEARCH: i8 = 4;
-const QUIT: i8 = 5;
+const SAVE: i8 = 5;
+const QUIT: i8 = 6;
 
 fn main() {
     println!("{}", "User management system".blue().bold());
@@ -53,7 +54,7 @@ fn main() {
         match arg {
             ADD => {
                 println!();
-                println!("Add user");
+                println!("{}", "Add user".bright_blue().bold());
                 let user = user::new_user(&active_id);
                 active_id.0.push(user.id);
                 users.0.push(user);
@@ -61,7 +62,7 @@ fn main() {
             }
             VIEW => {
                 println!();
-                println!("Users:");
+                println!("{}", "Users".bright_blue().bold());
                 search::all(&users);
             }
             REMOVE => {
@@ -93,12 +94,20 @@ fn main() {
                     _ => panic!("invalid option, quitting"),
                 }
             }
+            SAVE => {
+                save(&users);
+                println!("{}", "Saved data successfully".bright_green())
+            }
             QUIT => {
-                let data = serde_json::to_string(&users).unwrap();
-                fs::write("save.json", data).expect("Unable to write file");
+                save(&users);
                 println!("{}", "quitting...".yellow())
             }
             _ => panic!("invalid option, quitting"),
         }
     }
+}
+
+fn save(users: &Users) {
+    let data = serde_json::to_string(&users).unwrap();
+    fs::write("save.json", data).expect("Unable to write file");
 }

@@ -15,7 +15,8 @@ pub fn main_menu() {
     println!("2. View all");
     println!("3. Remove user");
     println!("4. Search");
-    println!("5. Quit");
+    println!("5. Save");
+    println!("6. Quit");
     print!("{}", "> ".green());
 }
 
