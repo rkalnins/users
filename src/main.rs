@@ -1,36 +1,18 @@
-use std::io::{stdin, stdout, Write};
-
 extern crate colored;
 
-use std::fs;
-use std::fs::{File, OpenOptions};
-use std::io;
-use std::io::prelude::*;
-use std::os::unix;
-use std::path::Path;
+use std::io::{stdin, stdout, Write};
 
 use colored::*;
-use std::error::Error;
+
+mod io;
 
 fn main() {
     println!("{}", "User management system".blue().bold());
 
-    let path = Path::new("users.txt");
-    let display = path.display();
-
-    if !Path::new("users.txt").exists() {
-        let mut file = match File::create(&path) {
-            Err(why) => panic!("couldn't create {}: {}",
-                               display,
-                               why.description()),
-            Ok(file) => file,
-        };
-    }
-
     let mut arg: i8 = 0;
     let mut users: Vec<User> = Vec::new();
 
-    while arg != 5 {
+    while arg != 6 {
         let mut input_text = String::new();
 
         println!();
@@ -38,16 +20,11 @@ fn main() {
         println!("2. View User");
         println!("3. Find Users");
         println!("4. Remove User");
-        println!("5. Quit");
+        println!("5. Search");
+        println!("6. Quit");
         print!("{}", "> ".green());
 
-        stdout().flush().expect("failed to flush stdout");
-        stdin()
-            .read_line(&mut input_text)
-            .expect("failed to read from stdin");
-
-        let trimmed = input_text.trim();
-        arg = match trimmed.parse::<i8>() {
+        arg = match io::get_arg().parse::<i8>() {
             Ok(n) => n,
             Err(_) => {
                 println!("{}", "enter valid input".red());
@@ -69,56 +46,81 @@ fn main() {
 
                 for user in users.iter() {
                     println!("{} {}", "User: ".red(), user.id);
-                    log_str_field("name", &user.name);
-                    log_str_field("username", &user.username);
-                    log_str_field("email", &user.email);
-                    log_i64_field("age", user.age);
+                    io::log_str_field("name", &user.name);
+                    io::log_str_field("username", &user.username);
+                    io::log_str_field("email", &user.email);
+                    io::log_i64_field("age", user.age);
                     println!();
                 }
             }
             3 => println!("3"),
-            4 => println!("4"),
-            5 => println!("{}", "quitting...".yellow()),
-            _ => panic!("not an option"),
+            4 => {
+                println!("Enter name:");
+                stdout().flush().expect("failed to flush stdout");
+                let mut input_text = String::new();
+                stdin().read_line(&mut input_text).unwrap();
+                let result = input_text.trim();
+                remove_user(&result, &mut users);
+            }
+            5 => {
+                println!("Search by");
+                println!();
+                println!("1. Name");
+                println!("2. Username");
+                println!("3. Email");
+                println!("4. Age");
+                println!("5. ID");
+                println!("6. Back");
+                print!("{}", "> ".green());
+
+                let s_arg = match io::get_arg().parse::<i8>() {
+                    Ok(n) => n,
+                    Err(_) => {
+                        println!("{}", "enter valid search option".red());
+                        continue;
+                    }
+                };
+
+                print!("{}", "> ".green());
+
+                match s_arg {
+                    1 => { println!("1") }
+                    2 => { println!("2") }
+                    3 => { println!("3") }
+                    4 => { println!("4") }
+                    5 => { println!("5") }
+                    6 => continue,
+                    _ => panic!("invalid option, quitting")
+                }
+            }
+            6 => println!("{}", "quitting...".yellow()),
+            _ => panic!("invalid option, quitting")
         }
     }
 }
 
-fn log_str_field(field: &str, data: &str) {
-    println!("{}: {:#}", field, data);
-}
 
-fn log_i64_field(field: &str, data: i64) {
-    println!("{}: {:#}", field, data);
-}
-
-fn get_trimmed_input(field: &str) -> String {
-    print!("{}{} ", field, ">".green());
-    stdout().flush().expect("failed to flush stdout");
-    let mut input_text = String::new();
-    stdin().read_line(&mut input_text).unwrap();
-    let result = input_text.trim();
-    result.parse().unwrap()
-}
-
-fn safe_i64_parse(field: &str) -> i64 {
-    match get_trimmed_input(field).parse::<i64>() {
-        Ok(n) => n,
-        Err(err) => {
-            println!("enter valid {}, {}", field, err);
-            safe_i64_parse(field)
-        }
-    }
+fn remove_user(name: &str, users: &mut Vec<User>) {
+    let index = users.iter().position(|u| &u.name == name).unwrap();
+    users.remove(index);
 }
 
 fn new_user() -> User {
-    User {
-        name: get_trimmed_input("name"),
-        username: get_trimmed_input("username"),
-        email: get_trimmed_input("email"),
-        age: safe_i64_parse("age"),
-        id: safe_i64_parse("id"),
-    }
+    let name = io::get_trimmed_input("name");
+    let username = io::get_trimmed_input("username");
+    let email = io::get_trimmed_input("email");
+    let age = io::safe_i64_parse("age");
+    let id = io::safe_i64_parse("id");
+
+    let user = User {
+        name,
+        username,
+        email,
+        age,
+        id,
+    };
+
+    user
 }
 
 struct User {
