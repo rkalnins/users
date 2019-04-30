@@ -15,6 +15,7 @@ use std::fs;
 use std::io::{stdout, Write};
 
 use crate::io::{get_arg, main_menu};
+use crate::user::{ActiveID, Users};
 
 mod io;
 mod search;
@@ -31,7 +32,10 @@ fn main() {
 
     let mut arg: i8 = 0;
     let data = fs::read_to_string("save.json").expect("Unable to read file");
-    let mut users: user::Users = serde_json::from_str(&data.trim()).unwrap();
+    let mut users: Users = serde_json::from_str(&data.trim()).unwrap();
+    let mut active_id: ActiveID = ActiveID(Vec::new());
+
+    users.0.iter().for_each(|u| active_id.0.push(u.id));
 
     while arg != QUIT {
         let _input_text = String::new();
@@ -50,7 +54,9 @@ fn main() {
             ADD => {
                 println!();
                 println!("Add user");
-                users.0.push(user::new_user());
+                let user = user::new_user(&active_id);
+                active_id.0.push(user.id);
+                users.0.push(user);
                 println!();
             }
             VIEW => {
@@ -61,7 +67,7 @@ fn main() {
             REMOVE => {
                 println!("Enter name:");
                 stdout().flush().expect("failed to flush stdout");
-                user::remove_user(&get_arg(), &mut users);
+                user::remove_user(&get_arg(), &mut users, &mut active_id);
             }
             SEARCH => {
                 search::search_options();
