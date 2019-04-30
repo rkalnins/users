@@ -84,21 +84,20 @@ fn main() {
                 print!("{}", "> ".green());
 
                 match s_arg {
-                    1 => { println!("1") }
-                    2 => { println!("2") }
-                    3 => { println!("3") }
-                    4 => { println!("4") }
-                    5 => { println!("5") }
+                    1 => println!("1"),
+                    2 => println!("2"),
+                    3 => println!("3"),
+                    4 => println!("4"),
+                    5 => println!("5"),
                     6 => continue,
-                    _ => panic!("invalid option, quitting")
+                    _ => panic!("invalid option, quitting"),
                 }
             }
             6 => println!("{}", "quitting...".yellow()),
-            _ => panic!("invalid option, quitting")
+            _ => panic!("invalid option, quitting"),
         }
     }
 }
-
 
 fn remove_user(name: &str, users: &mut Vec<User>) {
     let index = users.iter().position(|u| u.name == name).unwrap();

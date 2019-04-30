@@ -1,6 +1,5 @@
-use std::io::{stdin, stdout, Write};
 use colored::*;
-
+use std::io::{stdin, stdout, Write};
 
 pub fn get_arg() -> String {
     let mut s_input_text = String::new();
