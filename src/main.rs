@@ -32,17 +32,22 @@ fn main() {
     println!("{}", "User management system".blue().bold());
 
     let mut arg: i8 = 0;
-    let data = fs::read_to_string("save.json").expect("Unable to read file");
-    let mut users: Users = serde_json::from_str(&data.trim()).unwrap();
     let mut active_id: ActiveID = ActiveID(Vec::new());
 
+    // deserialize data from save.json file
+    let data = fs::read_to_string("save.json").expect("Unable to read file");
+    let mut users: Users = serde_json::from_str(&data.trim()).unwrap();
+
+    // add current user ids to active_id
     users.0.iter().for_each(|u| active_id.0.push(u.id));
 
     while arg != QUIT {
         let _input_text = String::new();
 
+        // display main menu
         main_menu();
 
+        // parse input as an 8-bit signed integer
         arg = match io::get_arg().parse::<i8>() {
             Ok(n) => n,
             Err(_) => {
@@ -51,7 +56,9 @@ fn main() {
             }
         };
 
+        // match option
         match arg {
+            // add user
             ADD => {
                 println!();
                 println!("{}", "Add user".bright_blue().bold());
@@ -60,19 +67,24 @@ fn main() {
                 users.0.push(user);
                 println!();
             }
+            // view all users
             VIEW => {
                 println!();
                 println!("{}", "Users".bright_blue().bold());
                 search::all(&users);
             }
+            // remove user
             REMOVE => {
                 println!("Enter name:");
                 stdout().flush().expect("failed to flush stdout");
                 user::remove_user(&get_arg(), &mut users, &mut active_id);
             }
+            // search for user
             SEARCH => {
+                // displays search options
                 search::search_options();
 
+                // parse input as an 8-bit signed integer
                 let s_arg = match io::get_arg().parse::<i8>() {
                     Ok(n) => n,
                     Err(_) => {
@@ -82,8 +94,11 @@ fn main() {
                 };
 
                 print!("{}", "> ".green());
+
+                // get user input
                 let input = get_arg();
 
+                // search users according to search field and user input
                 match s_arg {
                     1 => search::by_name(&input, &users),
                     2 => search::by_username(&input, &users),
@@ -94,10 +109,12 @@ fn main() {
                     _ => panic!("invalid option, quitting"),
                 }
             }
+            // save data
             SAVE => {
                 save(&users);
                 println!("{}", "Saved data successfully".bright_green())
             }
+            // quit app
             QUIT => {
                 save(&users);
                 println!("{}", "quitting...".yellow())
@@ -107,7 +124,11 @@ fn main() {
     }
 }
 
+/// Saves data in `users` to save.json
 fn save(users: &Users) {
+    // serialize user data to a string
     let data = serde_json::to_string(&users).unwrap();
+
+    // write string to save.json
     fs::write("save.json", data).expect("Unable to write file");
 }
