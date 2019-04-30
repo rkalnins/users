@@ -1,8 +1,6 @@
 use crate::io;
 
 use prettytable::{Table, Row, Cell};
-
-#[macro_use]
 use serde::{Serialize, Deserialize};
 
 #[derive(Serialize, Deserialize)]

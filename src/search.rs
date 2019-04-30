@@ -1,4 +1,5 @@
 use crate::user::{User, Users, log_users};
+use crate::colored::*;
 
 pub fn by_name(_name: &str, _users: &Users) {
     let mut _ok: Vec<&User> = Vec::new();
@@ -66,4 +67,16 @@ pub fn all(_users: &Users) {
         _ok.push(&_u);
     }
     log_users(&_ok);
+}
+
+pub fn search_options() {
+    println!("Search by");
+    println!();
+    println!("1. Name");
+    println!("2. Username");
+    println!("3. Email");
+    println!("4. Age");
+    println!("5. ID");
+    println!("6. Back");
+    print!("{}", "> ".green());
 }

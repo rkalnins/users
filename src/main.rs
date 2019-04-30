@@ -8,11 +8,16 @@ use std::io::{stdout, Write};
 use colored::*;
 use crate::io::get_arg;
 use std::fs;
-use crate::user::{Users, log_users, User};
 
 mod io;
 mod search;
 mod user;
+
+const ADD: i8 = 1;
+const VIEW: i8 = 2;
+const REMOVE: i8 = 3;
+const SEARCH: i8 = 4;
+const QUIT: i8 = 5;
 
 fn main() {
     println!("{}", "User management system".blue().bold());
@@ -22,16 +27,15 @@ fn main() {
     let mut users: user::Users = serde_json::from_str(&data.trim()).unwrap();
 
 
-    while arg != 6 {
+    while arg != 5 {
         let _input_text = String::new();
 
         println!();
         println!("1. Add user");
-        println!("2. View User");
-        println!("3. Find Users");
-        println!("4. Remove User");
-        println!("5. Search");
-        println!("6. Quit");
+        println!("2. View all");
+        println!("3. Remove user");
+        println!("4. Search");
+        println!("5. Quit");
         print!("{}", "> ".green());
 
         arg = match io::get_arg().parse::<i8>() {
@@ -43,33 +47,24 @@ fn main() {
         };
 
         match arg {
-            1 => {
+            ADD => {
                 println!();
                 println!("Add user");
                 users.0.push(user::new_user());
                 println!();
             }
-            2 => {
+            VIEW => {
                 println!();
                 println!("Users:");
                 search::all(&users);
             }
-            3 => println!("3"),
-            4 => {
+            REMOVE => {
                 println!("Enter name:");
                 stdout().flush().expect("failed to flush stdout");
                 user::remove_user(&get_arg(), &mut users);
             }
-            5 => {
-                println!("Search by");
-                println!();
-                println!("1. Name");
-                println!("2. Username");
-                println!("3. Email");
-                println!("4. Age");
-                println!("5. ID");
-                println!("6. Back");
-                print!("{}", "> ".green());
+            SEARCH => {
+                search::search_options();
 
                 let s_arg = match io::get_arg().parse::<i8>() {
                     Ok(n) => n,
@@ -92,7 +87,7 @@ fn main() {
                     _ => panic!("invalid option, quitting"),
                 }
             }
-            6 => {
+            QUIT => {
                 let data = serde_json::to_string(&users).unwrap();
                 fs::write("save.json", data).expect("Unable to write file");
                 println!("{}", "quitting...".yellow())
