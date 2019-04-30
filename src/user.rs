@@ -4,8 +4,8 @@ use crate::io;
 use prettytable::{Cell, Row, Table};
 
 // see Cargo.toml for acknowledgement
-use serde::{Deserialize, Serialize};
 use colored::Colorize;
+use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize)]
 pub struct User {
