@@ -1,5 +1,5 @@
-use crate::user::{User, Users, log_users};
 use crate::colored::*;
+use crate::user::{log_users, User, Users};
 
 pub fn by_name(_name: &str, _users: &Users) {
     let mut _ok: Vec<&User> = Vec::new();

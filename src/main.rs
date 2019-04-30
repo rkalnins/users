@@ -5,8 +5,8 @@ extern crate serde;
 
 use std::io::{stdout, Write};
 
-use colored::*;
 use crate::io::get_arg;
+use colored::*;
 use std::fs;
 
 mod io;
@@ -25,7 +25,6 @@ fn main() {
     let mut arg: i8 = 0;
     let data = fs::read_to_string("save.json").expect("Unable to read file");
     let mut users: user::Users = serde_json::from_str(&data.trim()).unwrap();
-
 
     while arg != 5 {
         let _input_text = String::new();

@@ -1,7 +1,7 @@
 use crate::io;
 
-use prettytable::{Table, Row, Cell};
-use serde::{Serialize, Deserialize};
+use prettytable::{Cell, Row, Table};
+use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize)]
 pub struct User {
@@ -46,7 +46,8 @@ pub fn log_users(users: &[&User]) {
             Cell::new(&user.name),
             Cell::new(&user.username),
             Cell::new(&user.email),
-            Cell::new(&user.age.to_string())]));
+            Cell::new(&user.age.to_string()),
+        ]));
     }
 
     table.printstd();
