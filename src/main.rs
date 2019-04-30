@@ -1,13 +1,20 @@
+// see Cargo.toml for acknowledgement
 extern crate colored;
+
+use colored::*;
+
+// see Cargo.toml for acknowledgement
 #[macro_use]
 extern crate prettytable;
+
+// see Cargo.toml for acknowledgement
 extern crate serde;
 
+// standard library
+use std::fs;
 use std::io::{stdout, Write};
 
-use crate::io::get_arg;
-use colored::*;
-use std::fs;
+use crate::io::{get_arg, main_menu};
 
 mod io;
 mod search;
@@ -26,16 +33,10 @@ fn main() {
     let data = fs::read_to_string("save.json").expect("Unable to read file");
     let mut users: user::Users = serde_json::from_str(&data.trim()).unwrap();
 
-    while arg != 5 {
+    while arg != QUIT {
         let _input_text = String::new();
 
-        println!();
-        println!("1. Add user");
-        println!("2. View all");
-        println!("3. Remove user");
-        println!("4. Search");
-        println!("5. Quit");
-        print!("{}", "> ".green());
+        main_menu();
 
         arg = match io::get_arg().parse::<i8>() {
             Ok(n) => n,

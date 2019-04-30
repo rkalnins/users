@@ -1,11 +1,26 @@
 [package]
 name = "users"
 version = "0.1.0"
-authors = ["Roberts Kalnins <robertsmkalnins@gmail.com>"]
+authors = [""]
 edition = "2018"
 
 [dependencies]
+# colored (https://github.com/mackwic/colored)
+# Thomas Wickham and other contributors, Mozilla Public License 2.0
+#
+# provides support for coloring terminal output text
 colored = "1.7"
+
+# prettytable-rs (https://github.com/phsym/prettytable-rs)
+# Pierre-Henri Symoneaux
+#
+# library for building, formatting, aligning, and printing tables to the terminal output
 prettytable-rs = "^0.8"
+
+# serde (https://github.com/serde-rs/serde)
+# Various contributors, Apache License, Version 2.0 and MIT Liscence
+#
+# framework and library for serializing and deserializing data structures
+# in Rust to various formats
 serde = { version = "1.0.90", features = ["derive"] }
 serde_json = "1.0"
