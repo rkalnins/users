@@ -62,7 +62,11 @@ fn main() {
             ADD => {
                 println!();
                 println!("{}", "Add user".bright_blue().bold());
+
+                // get new user
                 let user = user::new_user(&active_id);
+
+                // add id and user
                 active_id.0.push(user.id);
                 users.0.push(user);
                 println!();

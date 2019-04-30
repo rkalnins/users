@@ -61,7 +61,6 @@ pub fn new_user(active_id: &ActiveID) -> User {
 
 /// Prints table of all users in `users` parameter
 pub fn log_users(users: &[&User]) {
-
     // create table
     let mut table = Table::new();
 
