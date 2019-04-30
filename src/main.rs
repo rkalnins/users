@@ -1,4 +1,6 @@
 extern crate colored;
+#[macro_use]
+extern crate prettytable;
 
 use std::io::{stdout, Write};
 
@@ -45,11 +47,7 @@ fn main() {
             2 => {
                 println!();
                 println!("Users:");
-                println!();
-
-                for _u in users.iter() {
-                    user::log_user(_u)
-                }
+                search::all(&users);
             }
             3 => println!("3"),
             4 => {

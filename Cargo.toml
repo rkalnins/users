@@ -6,3 +6,4 @@ edition = "2018"
 
 [dependencies]
 colored = "1.7"
+prettytable-rs = "^0.8"

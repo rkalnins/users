@@ -1,6 +1,6 @@
 use crate::io;
-use colored::*;
 
+use prettytable::{Table, Row, Cell};
 
 pub struct User {
     pub name: String,
@@ -31,11 +31,18 @@ pub fn new_user() -> User {
     }
 }
 
-pub fn log_user(user: &User) {
-    println!("{} {}", "User: ".red(), user.id);
-    io::log_str_field("name", &user.name);
-    io::log_str_field("username", &user.username);
-    io::log_str_field("email", &user.email);
-    io::log_i64_field("age", user.age);
-    println!();
+pub fn log_users(users: &Vec<&User>) {
+    let mut table = Table::new();
+    table.add_row(row!["id", "name", "username", "email", "age"]);
+
+    for user in users {
+        table.add_row(Row::new(vec![
+            Cell::new(&user.id.to_string()),
+            Cell::new(&user.name),
+            Cell::new(&user.username),
+            Cell::new(&user.email),
+            Cell::new(&user.age.to_string())]));
+    }
+
+    table.printstd();
 }
