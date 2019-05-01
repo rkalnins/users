@@ -33,6 +33,7 @@ pub fn remove_user(name: &str, users: &mut Users, active_id: &mut ActiveID) {
 
 /// Prompts user for data fields and creates a new user
 pub fn new_user(active_id: &ActiveID) -> User {
+
     // prompt for input
     let name = io::get_trimmed_input("name");
     let username = io::get_trimmed_input("username");
@@ -50,6 +51,7 @@ pub fn new_user(active_id: &ActiveID) -> User {
 
     println!("{} {}", "final id is".green(), id);
 
+    // return user
     User {
         name,
         username,
