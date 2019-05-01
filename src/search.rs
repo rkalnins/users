@@ -11,11 +11,17 @@ use crate::user::{log_users, User, Users};
 /// statement. The others are shortened with the use of the iterator, inline foreach loops,
 /// and closures (similar to lambda functions)
 
-fn log_if_good(count: i32, _field: &str, _ok: &Vec<&User>) {
+/// prints table if a user is found with given field
+fn log_if_good(count: i32, _field: &str, _ok: &[&User]) {
     if count > 0 {
         log_users(&_ok);
     } else {
-        println!("{} {} {}", "No users with name".red(), _field.red(), "found".red());
+        println!(
+            "{} {} {}",
+            "No users with name".red(),
+            _field.red(),
+            "found".red()
+        );
     }
 }
 
