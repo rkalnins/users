@@ -1,9 +1,7 @@
 use crate::io;
 
-// see Cargo.toml for acknowledgement
 use prettytable::{Cell, Row, Table};
 
-// see Cargo.toml for acknowledgement
 use colored::Colorize;
 use serde::{Deserialize, Serialize};
 

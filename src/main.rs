@@ -1,16 +1,12 @@
-// see Cargo.toml for acknowledgement
 extern crate colored;
 
 use colored::*;
 
-// see Cargo.toml for acknowledgement
 #[macro_use]
 extern crate prettytable;
 
-// see Cargo.toml for acknowledgement
 extern crate serde;
 
-// standard library
 use std::fs;
 use std::io::{stdout, Write};
 

@@ -9,7 +9,7 @@ edition = "2018"
 # Thomas Wickham and other contributors, Mozilla Public License 2.0
 #
 # provides support for coloring terminal output text
-colored = "1.7"
+colored = "1.8.0"
 
 # prettytable-rs (https://github.com/phsym/prettytable-rs)
 # Pierre-Henri Symoneaux

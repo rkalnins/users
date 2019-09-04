@@ -1,17 +1,7 @@
-// see Cargo.toml for acknowledgement
 use crate::colored::*;
 
 use crate::user::{log_users, User, Users};
 
-/// All searches work similarly:
-///         Loop through all users, if the current data is equal to the target data,
-///         add the user to the `_ok` vector. Then print all users in the `_ok` vector.
-///
-/// The first search `by_name()` is explicitly written out with a `for` loop and `if ()`
-/// statement. The others are shortened with the use of the iterator, inline foreach loops,
-/// and closures (similar to lambda functions)
-
-/// prints table if a user is found with given field
 fn log_if_good(count: i32, _field: &str, _ok: &[&User]) {
     if count > 0 {
         log_users(&_ok);

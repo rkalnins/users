@@ -1,4 +1,3 @@
-// see Cargo.toml for acknowledgement
 use colored::*;
 
 // standard library
